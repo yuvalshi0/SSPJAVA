@@ -35,7 +35,7 @@ public class WeightedGraph<T,S> extends AbstarctWeightedGraph<T,S>  {
 	}
 	
 	private boolean checkEdge(T source, T dest) {
-		boolean x = (vertices.contains(source) && vertices.contains(dest)) ? true : false;
+		boolean x = ((vertices.contains(source) && vertices.contains(dest)) && dest != source) ? true : false;
 		return x;
 	}
 

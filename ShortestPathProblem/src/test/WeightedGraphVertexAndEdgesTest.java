@@ -56,5 +56,14 @@ class WeightedGraphVertexAndEdgesTest {
 		int weight = graph.getEdges().get(0).getWeight();
 		assertEquals(3, weight);
 	}
+	
+
+	@Test
+	void insertedEdgesWithTheSameDestAndSource() {
+		graph.addNode(5);
+		graph.addEdge(5, 5, 3);
+		int size = graph.getEdges().size();
+		assertEquals(0, size);
+	}
 
 }
