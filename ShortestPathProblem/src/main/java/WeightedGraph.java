@@ -11,16 +11,17 @@ public class WeightedGraph<T,S> extends AbstarctWeightedGraph<T,S>  {
 	@Override
 	public void addNode(T item) {
 		if(vertices == null) {
-			vertices = new HashSet<INode<T>>();
+			vertices = new HashSet<T>();
 		}
 		vertices.add(
-				new Node<T>(item) 
+				item
 				);
 		
 	}
+	
 	//TODO: add exception
 	@Override
-	public void addEdge(INode<T> source, INode<T> dest, S weight) {
+	public void addEdge(T source, T dest, S weight) {
 		if(edges == null) {
 			edges = new ArrayList<AbstractWeightedEdge<T,S>>();
 		}
@@ -33,7 +34,7 @@ public class WeightedGraph<T,S> extends AbstarctWeightedGraph<T,S>  {
 		}
 	}
 	
-	private boolean checkEdge(INode<T> source, INode<T> dest) {
+	private boolean checkEdge(T source, T dest) {
 		boolean x = (vertices.contains(source) && vertices.contains(dest)) ? true : false;
 		return x;
 	}
