@@ -1,9 +1,9 @@
 package main.java;
 
-public abstract class AbstractWeightedEdge<T,S> implements IEdge<T,S> {
-	private T source;
-	private T destination;
-	private S weight;
+public abstract class AbstractWeightedEdge<T,S> implements IEdge<T,S>, Comparable<S>, Weightable<S> {
+	protected T source;
+	protected T destination;
+	protected S weight;
 	
 	public AbstractWeightedEdge(T source, T destination, S weight) {
 		this.source = source;
@@ -13,6 +13,14 @@ public abstract class AbstractWeightedEdge<T,S> implements IEdge<T,S> {
 	
 	public S getWeight() {
 		return weight;
+	}
+	
+	public T getSource() {
+		return source;
+	}
+
+	public T getDest() {
+		return destination;
 	}
 	
 }

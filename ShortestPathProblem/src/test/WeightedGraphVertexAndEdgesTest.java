@@ -5,14 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import main.java.IntegerWeightedGraph;
 import main.java.WeightedGraph;
 
 class WeightedGraphVertexAndEdgesTest {
-	public WeightedGraph<Integer, Integer> graph;
+	public IntegerWeightedGraph graph;
 	
 	@BeforeEach
 	void createASimpleGraph() {
-		graph = new WeightedGraph<Integer, Integer>();
+		graph = new IntegerWeightedGraph();
 	}
 	
 	@Test

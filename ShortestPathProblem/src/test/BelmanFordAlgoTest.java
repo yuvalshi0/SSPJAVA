@@ -5,15 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.java.WeightedGraph;
+import main.java.BellmanFordAlgo;
+import main.java.IntegerWeightedGraph;
 
 class BelmanFordAlgoTest {
 
-	public WeightedGraph<Integer, Integer> graph;
+	public IntegerWeightedGraph graph;
 	
 	@BeforeEach
 	void createSimpleGraph() {
-		graph = new WeightedGraph<Integer, Integer>();
+		graph = new IntegerWeightedGraph();
 		BellmanFordAlgo algo = new BellmanFordAlgo();
 	}
 	
