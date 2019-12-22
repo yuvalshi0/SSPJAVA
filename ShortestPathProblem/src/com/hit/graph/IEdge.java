@@ -1,4 +1,4 @@
-package main.java;
+package com.hit.graph;
 
 public interface IEdge<T,S> {
 	public T getSource();

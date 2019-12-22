@@ -1,12 +1,12 @@
-package test;
+package com.hit.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.java.IntegerWeightedEdge;
-import main.java.IntegerWeightedGraph;
+import com.hit.algorithm.IntegerWeightedEdge;
+import com.hit.algorithm.IntegerWeightedGraph;
 
 class WeightedGraphVertexAndEdgesTest {
 	public IntegerWeightedGraph graph;

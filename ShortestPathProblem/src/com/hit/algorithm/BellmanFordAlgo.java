@@ -1,6 +1,9 @@
-package main.java;
+package com.hit.algorithm;
 
 import java.util.HashMap;
+
+import com.hit.graph.AbstarctWeightedGraph;
+import com.hit.graph.AbstractWeightedEdge;
 
 public class BellmanFordAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S> {
 

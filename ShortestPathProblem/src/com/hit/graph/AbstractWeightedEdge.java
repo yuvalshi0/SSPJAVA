@@ -1,4 +1,4 @@
-package main.java;
+package com.hit.graph;
 
 public abstract class AbstractWeightedEdge<T,S> implements IEdge<T,S> {
 	protected T source;

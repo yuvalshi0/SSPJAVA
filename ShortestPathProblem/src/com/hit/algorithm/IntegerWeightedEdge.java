@@ -1,4 +1,6 @@
-package main.java;
+package com.hit.algorithm;
+
+import com.hit.graph.AbstractWeightedEdge;
 
 public class IntegerWeightedEdge extends AbstractWeightedEdge<Integer, Integer> {
 

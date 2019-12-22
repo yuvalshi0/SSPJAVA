@@ -1,4 +1,4 @@
-package main.java;
+package com.hit.graph;
 
 public interface IGraph<T,S> {
 	public void addNode(T item);

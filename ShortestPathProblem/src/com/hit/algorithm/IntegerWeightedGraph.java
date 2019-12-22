@@ -1,4 +1,6 @@
-package main.java;
+package com.hit.algorithm;
+
+import com.hit.graph.AbstarctWeightedGraph;
 
 public class IntegerWeightedGraph extends AbstarctWeightedGraph<Integer,Integer>  {
 

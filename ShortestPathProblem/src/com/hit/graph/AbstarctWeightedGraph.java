@@ -1,11 +1,11 @@
-package main.java;
+package com.hit.graph;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-abstract class AbstarctWeightedGraph<T,S> implements IGraph<T,S>, Weightable<S> {
+public abstract class AbstarctWeightedGraph<T,S> implements IGraph<T,S>, Weightable<S> {
 	
 	protected List<AbstractWeightedEdge<T,S>> edges;
 	protected Set<T> vertices;
