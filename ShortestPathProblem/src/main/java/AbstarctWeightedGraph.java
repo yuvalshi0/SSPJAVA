@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-abstract class AbstarctWeightedGraph<T,S> implements IGraph<T,S> {
+abstract class AbstarctWeightedGraph<T,S> implements IGraph<T,S>, Weightable<S> {
 	
 	protected List<AbstractWeightedEdge<T,S>> edges;
 	protected Set<T> vertices;
@@ -27,22 +27,18 @@ abstract class AbstarctWeightedGraph<T,S> implements IGraph<T,S> {
 				);
 		
 	}
-	
-	 abstract void edgeInsert(T source, T dest, S weight);
-	
-	 public void addEdge(T source, T dest, S weight) {
+		
+	 public void addEdge(AbstractWeightedEdge<T,S> edge) {
 		if(edges == null) {
 			edges = new ArrayList<AbstractWeightedEdge<T,S>>();
 		}
-		if(checkEdge(source, dest)) {
-			edgeInsert(source, dest, weight);
+		if(checkEdge(edge.getDest(), edge.getSource())) {
+			edges.add(edge);
 		} else {
 			
 		}
 	}
 	 
-	
-	
 	private boolean checkEdge(T source, T dest) {
 		boolean x = ((vertices.contains(source) && vertices.contains(dest)) && dest != source) ? true : false;
 		return x;

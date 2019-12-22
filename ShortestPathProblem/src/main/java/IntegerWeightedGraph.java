@@ -3,16 +3,12 @@ package main.java;
 public class IntegerWeightedGraph extends AbstarctWeightedGraph<Integer,Integer>  {
 
 	@Override
-	void edgeInsert(Integer source, Integer dest, Integer weight) {
-		edges.add(new IntegerWeightedEdge(source, dest, weight));
-		
+	public Integer getMaxToken() {
+		return Integer.MAX_VALUE;
 	}
 
-
-
-	
-	
-	
-	
-
+	@Override
+	public Integer getZeroToken() {
+		return 0;
+	}	
 }

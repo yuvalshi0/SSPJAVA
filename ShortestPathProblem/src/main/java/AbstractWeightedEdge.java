@@ -1,6 +1,6 @@
 package main.java;
 
-public abstract class AbstractWeightedEdge<T,S> implements IEdge<T,S>, Comparable<S>, Weightable<S> {
+public abstract class AbstractWeightedEdge<T,S> implements IEdge<T,S> {
 	protected T source;
 	protected T destination;
 	protected S weight;

@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import main.java.IntegerWeightedEdge;
 import main.java.IntegerWeightedGraph;
-import main.java.WeightedGraph;
 
 class WeightedGraphVertexAndEdgesTest {
 	public IntegerWeightedGraph graph;
@@ -35,7 +35,7 @@ class WeightedGraphVertexAndEdgesTest {
 	void addSimpleEdgeTest() {
 		graph.addNode(5);
 		graph.addNode(6);
-		graph.addEdge(5, 6, 3);
+		graph.addEdge(new IntegerWeightedEdge(5, 6, 3));
 		int size = graph.getEdges().size();
 		assertEquals(1, size);
 	}
@@ -44,7 +44,7 @@ class WeightedGraphVertexAndEdgesTest {
 	void addSimpleEdgeThatDoesntExistsTest() {
 		graph.addNode(5);
 		graph.addNode(6);
-		graph.addEdge(5, 0, 3);
+		graph.addEdge(new IntegerWeightedEdge(5, 0, 3));
 		int size = graph.getEdges().size();
 		assertEquals(0, size);
 	}
@@ -53,16 +53,27 @@ class WeightedGraphVertexAndEdgesTest {
 	void insertedEdgesTest() {
 		graph.addNode(5);
 		graph.addNode(6);
-		graph.addEdge(5, 6, 3);
+		graph.addEdge(new IntegerWeightedEdge(5, 6, 3));
 		int weight = graph.getEdges().get(0).getWeight();
 		assertEquals(3, weight);
 	}
+	
+	@Test
+	void insertedEdgesWithThreeEdgesTesy() {
+		graph.addNode(5);
+		graph.addNode(6);
+		graph.addEdge(new IntegerWeightedEdge(5, 6, 3));
+		graph.addEdge(new IntegerWeightedEdge(6, 5, 3));
+		int size = graph.getEdges().size();
+		assertEquals(2, size);
+	}
+	
 	
 
 	@Test
 	void insertedEdgesWithTheSameDestAndSource() {
 		graph.addNode(5);
-		graph.addEdge(5, 5, 3);
+		graph.addEdge(new IntegerWeightedEdge(5, 5, 3));
 		int size = graph.getEdges().size();
 		assertEquals(0, size);
 	}
