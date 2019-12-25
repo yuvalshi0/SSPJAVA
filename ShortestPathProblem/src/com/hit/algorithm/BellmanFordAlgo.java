@@ -7,11 +7,13 @@ import com.hit.graph.AbstarctWeightedGraph;
 import com.hit.graph.AbstractWeightedEdge;
 
 public class BellmanFordAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S> {
-
+	
+	private HashMap<T,S> distMap;
+	//TODO: consider adding relex to make code more beautiful, meaning adding all the code inside the edge loop to be in a seperate function called relax
 	@Override
 	public S compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) throws IOException {
 		int vertexSize = graph.getNodes().size();
-		HashMap<T,S> distMap = new HashMap<>();
+		distMap = new HashMap<>();
 		
 		for(T node : graph.getNodes()) {
 			distMap.put(node, graph.getMaxToken());
