@@ -35,8 +35,9 @@ class DijkstraAlgoTest {
 		
 	}
 	
+	//BUGGG
 	@Test
-	void relexFunctionTest() throws IOException {
+	void relaxFunctionTest() throws IOException {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
@@ -45,7 +46,7 @@ class DijkstraAlgoTest {
 		graph.addEdge(new IntegerWeightedEdge(1, 3, 4));
 		graph.addEdge(new IntegerWeightedEdge(2, 3, 1));
 		
-		int shortestPath = algo.compute(graph,1,2);
+		int shortestPath = algo.compute(graph,1,3);
 		assertEquals(2, shortestPath);
 		
 	}
