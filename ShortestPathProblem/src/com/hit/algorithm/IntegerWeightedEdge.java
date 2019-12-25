@@ -13,4 +13,5 @@ public class IntegerWeightedEdge extends AbstractWeightedEdge<Integer, Integer> 
 	public Integer addTo(Integer add) {
 		return (weight + add);
 	}
+
 }

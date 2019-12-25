@@ -3,6 +3,9 @@ package com.hit.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +24,7 @@ class BelmanFordAlgoTest {
 	}
 	
 	@Test
-	void simpleSolutionTest() {
+	void simpleSolutionTest() throws IOException {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
@@ -35,7 +38,7 @@ class BelmanFordAlgoTest {
 	}
 	
 	@Test
-	void simpleSolutionTestWithMinus() {
+	void simpleSolutionTestWithMinus() throws IOException {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
@@ -47,6 +50,18 @@ class BelmanFordAlgoTest {
 		int shortestPath = algo.compute(graph,1,3);
 		assertEquals(0, shortestPath);
 		
+	}
+	
+	@Test
+	public void MinusCircleTest() throws IOException {
+		graph.addNode(1);
+		graph.addNode(2);
+		graph.addNode(3);
+		
+		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
+		graph.addEdge(new IntegerWeightedEdge(2, 3, -5));
+		graph.addEdge(new IntegerWeightedEdge(3, 1, -1));
+		Assertions.assertThrows(IOException.class, () -> algo.compute(graph,1,2));
 	}
 
 }

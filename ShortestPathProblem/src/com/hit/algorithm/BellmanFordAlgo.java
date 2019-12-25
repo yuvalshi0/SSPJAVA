@@ -1,5 +1,6 @@
 package com.hit.algorithm;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import com.hit.graph.AbstarctWeightedGraph;
@@ -7,10 +8,8 @@ import com.hit.graph.AbstractWeightedEdge;
 
 public class BellmanFordAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S> {
 
-	
-	//TODO: add minus cricle loop case
 	@Override
-	public S compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) {
+	public S compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) throws IOException {
 		int vertexSize = graph.getNodes().size();
 		HashMap<T,S> distMap = new HashMap<>();
 		
@@ -34,6 +33,19 @@ public class BellmanFordAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<
         }	
 		
 	}
+		
+		 for (AbstractWeightedEdge<T,S> edge : graph.getEdges()) { 
+             T u = edge.getSource();
+             T v = edge.getDest(); 
+             S currentPathPlusWeight = edge.addTo(distMap.get(u));
+             S currentPathWeight = distMap.get(v);
+             int isTheNewPathShorter = currentPathPlusWeight.compareTo(currentPathWeight);
+             
+             if (distMap.get(u) != graph.getMaxToken() && isTheNewPathShorter < 0) { 
+             	throw new IOException();
+         } 
+     }	
+		 
 		return distMap.get(destination);
 	}
 }
