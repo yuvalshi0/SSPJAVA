@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +35,7 @@ class DijkstraAlgoTest {
 		assertEquals(1, shortestPath);
 		
 	}
-	
-	//BUGGG
+
 	@Test
 	void relaxFunctionTest() throws IOException {
 		graph.addNode(1);
@@ -48,6 +48,19 @@ class DijkstraAlgoTest {
 		
 		int shortestPath = algo.compute(graph,1,3);
 		assertEquals(2, shortestPath);
+		
+	}
+	
+	@Test
+	void simpleSolutionTestWithMinus() throws IOException {
+		graph.addNode(1);
+		graph.addNode(2);
+		graph.addNode(3);
+		
+		graph.addEdge(new IntegerWeightedEdge(1, 2, -1));
+		graph.addEdge(new IntegerWeightedEdge(1, 3, 2));
+		graph.addEdge(new IntegerWeightedEdge(2, 3, 2));
+		Assertions.assertThrows(IOException.class, () -> algo.compute(graph,1,2));
 		
 	}
 

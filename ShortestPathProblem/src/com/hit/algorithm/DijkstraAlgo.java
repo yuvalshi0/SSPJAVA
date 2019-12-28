@@ -39,10 +39,14 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
 		return distMap.get(destination);
 	}
 
-	private void relax(T u) {
+	private void relax(T u) throws IOException {
         // All the neighbors of v 
         for (AbstractWeightedEdge<T,S> edge : graph.getEdges()) {  
-            if(edge.getSource() == u) {
+            if (edge.getWeight().compareTo(graph.getZeroToken()) < 0) {
+            	throw new IOException();
+            }
+        	
+        	if(edge.getSource() == u) {
             	T v = edge.getDest();
             if (!settled.contains(v)) { 
                 S currentPathPlusWeight = edge.addTo(distMap.get(u));
@@ -52,7 +56,6 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
                 if (isTheNewPathShorter < 0) { 
                 	distMap.put(v, currentPathPlusWeight); 
             } 
-                // Add the current node to the queue 
                 pq.add(v); 
             } 
            }
