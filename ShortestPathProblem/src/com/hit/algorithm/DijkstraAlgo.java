@@ -3,7 +3,9 @@ package com.hit.algorithm;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Set;
 
 import com.hit.graph.AbstarctWeightedGraph;
@@ -23,24 +25,45 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
 		distMap = new HashMap<>();
 		settled = new HashSet<>();
 		
+		if(graph.getNodes() == null) {
+			throw new IOException();
+		}
+		
 		for(T node : graph.getNodes()) {
 			distMap.put(node, graph.getMaxToken());
 		}
 		distMap.put(source,graph.getZeroToken());
 		
+		if(graph.getEdges() == null) {
+			return distMap.get(destination);
+		}
+		
 		pq.add(source);
 		
 		while (settled.size() != graph.getNodes().size()) { 
-            T u = pq.remove();
+           if(pq.size() == 0) {
+        	   pq.add(getNextKey());
+           }
+           
+			T u = pq.remove();
             settled.add(u); 
             relax(u); 
         } 
 		
 		return distMap.get(destination);
 	}
+	
+	private T getNextKey() {
+		for(T key : distMap.keySet()) {
+ 		   if(!settled.contains(key)) {
+ 			  return key;
+ 		   }
+ 	   }
+		return null;
+	}
 
 	private void relax(T u) throws IOException {
-        // All the neighbors of v 
+
         for (AbstractWeightedEdge<T,S> edge : graph.getEdges()) {  
             if (edge.getWeight().compareTo(graph.getZeroToken()) < 0) {
             	throw new IOException();

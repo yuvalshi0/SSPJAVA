@@ -42,7 +42,6 @@ class BelmanFordAlgoTest {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
-		
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
 		graph.addEdge(new IntegerWeightedEdge(1, 3, 2));
 		graph.addEdge(new IntegerWeightedEdge(2, 3, -1));
@@ -58,10 +57,23 @@ class BelmanFordAlgoTest {
 		graph.addNode(2);
 		graph.addNode(3);
 		
+		
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
 		graph.addEdge(new IntegerWeightedEdge(2, 3, -5));
 		graph.addEdge(new IntegerWeightedEdge(3, 1, -1));
 		Assertions.assertThrows(IOException.class, () -> algo.compute(graph,1,2));
+	}
+	
+	@Test
+	void simpleSolutionTestWithMinus2() throws IOException {
+		graph.addNode(1);
+		graph.addNode(2);
+		graph.addNode(3);
+		
+		graph.addEdge(new IntegerWeightedEdge(1, 2, 15));
+		graph.addEdge(new IntegerWeightedEdge(2, 1, 17));
+		assertEquals(15,algo.compute(graph,1,2));
+		
 	}
 
 }

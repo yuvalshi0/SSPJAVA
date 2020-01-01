@@ -63,5 +63,18 @@ class DijkstraAlgoTest {
 		Assertions.assertThrows(IOException.class, () -> algo.compute(graph,1,2));
 		
 	}
+	
+	@Test
+	void VertexWithNoEdgesTest() throws IOException {
+		graph.addNode(1);
+		graph.addNode(2);
+		graph.addNode(3);
+		
+		graph.addEdge(new IntegerWeightedEdge(2, 3, 1));
+		int shortestPath= algo.compute(graph,1,2);
+		assertEquals(graph.getMaxToken(), shortestPath);
+		
+	}
+	
 
 }
