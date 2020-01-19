@@ -26,7 +26,7 @@ class ServiceTest {
 	@BeforeAll
 	static void buildServices() {
 		BellmanService = new ShortestPathService(new BellmanFordAlgo<Integer, Integer>(),filePath);
-		DijService = new ShortestPathService(new DijkstraAlgo<Integer, Integer>());
+		DijService = new ShortestPathService(new DijkstraAlgo<Integer, Integer>(),filePath);
 	}
 	
 	@BeforeEach

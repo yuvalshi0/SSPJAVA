@@ -10,7 +10,7 @@ import com.hit.idao.DaoFileImpl;
 public class ShortestPathService {
 	IAlgoSPP<Integer, Integer> algo;	
 	String filePath = ".//src\\resources\\datasource.json";
-	DaoFileImpl<IGraph<Integer,Integer>> idao = new DaoFileImpl<IGraph<Integer,Integer>>(filePath);
+	//DaoFileImpl<IGraph<Integer,Integer>> idao = new DaoFileImpl<IGraph<Integer,Integer>>(filePath);
 	
 	public ShortestPathService(IAlgoSPP<Integer, Integer> algo) {
 		this.algo = algo;
@@ -21,9 +21,6 @@ public class ShortestPathService {
 		this.filePath = filepath;
 	}
 	
-	public DaoFileImpl<IGraph<Integer,Integer>> getDao() {
-		return idao;
-	}
 	
 	public Integer compute(AbstarctWeightedGraph<Integer,Integer> graph, Integer source, Integer dest) {
 		try {	
