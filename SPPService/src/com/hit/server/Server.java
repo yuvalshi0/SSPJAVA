@@ -40,7 +40,7 @@ public class Server implements Runnable {
 				socket = serverSocket.accept();
 				System.out.println("New client connected");
 				executor.execute(
-						new HandleRequest<String>(socket));
+						new HandleRequest(socket));
 	             
 			} catch (IOException e) {
 				e.printStackTrace();

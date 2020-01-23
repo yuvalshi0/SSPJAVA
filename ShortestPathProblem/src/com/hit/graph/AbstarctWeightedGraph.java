@@ -27,19 +27,39 @@ public abstract class AbstarctWeightedGraph<T,S> implements IGraph<T,S>, Weighta
 				);
 		
 	}
+	
+	public void addNodes(Set<T> items) {
+		if(vertices == null) {
+			vertices = new HashSet<T>();
+		}
+		vertices.addAll(
+				items
+				);
+		
+	}
 		
 	 public void addEdge(AbstractWeightedEdge<T,S> edge) {
 		if(edges == null) {
-			edges = new ArrayList<AbstractWeightedEdge<T,S>>();
+			this.edges = new ArrayList<AbstractWeightedEdge<T,S>>();
 		}
 		if(checkEdge(edge.getDest(), edge.getSource())) {
 			edges.add(edge);
-		} else {
-			
 		}
 	}
 	 
+	 public void addEdges( List<AbstractWeightedEdge<T,S>> edges) {
+			if(this.edges == null) {
+				this.edges = new ArrayList<AbstractWeightedEdge<T,S>>();
+			}
+			for(AbstractWeightedEdge<T,S> edge : edges) {
+			if(checkEdge(edge.getDest(), edge.getSource())) {
+				this.edges.add(edge);
+				}
+			}
+		}
+	 
 	private boolean checkEdge(T source, T dest) {
+		if(vertices == null) return false;
 		boolean x = ((vertices.contains(source) && vertices.contains(dest)) && dest != source) ? true : false;
 		return x;
 	}

@@ -66,7 +66,7 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
 
         for (AbstractWeightedEdge<T,S> edge : graph.getEdges()) {  
             if (edge.getWeight().compareTo(graph.getZeroToken()) < 0) {
-            	throw new IOException();
+            	throw new IOException("Below zero edge detected");
             }
         	
         	if(edge.getSource() == u) {

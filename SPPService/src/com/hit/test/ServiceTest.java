@@ -2,6 +2,7 @@ package com.hit.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +16,8 @@ import com.hit.algorithm.IntegerWeightedEdge;
 import com.hit.algorithm.IntegerWeightedGraph;
 import com.hit.dm.DataModel;
 import com.hit.graph.IGraph;
+import com.hit.idao.DaoFileImpl;
+import com.hit.server.IDaoController;
 import com.hit.service.ShortestPathService;
 
 class ServiceTest {
@@ -22,11 +25,14 @@ class ServiceTest {
 	IntegerWeightedGraph graph;
 	static ShortestPathService BellmanService;
 	static ShortestPathService DijService;
+	static IDaoController<IGraph<Integer,Integer>> idao;
 	
 	@BeforeAll
 	static void buildServices() {
 		BellmanService = new ShortestPathService(new BellmanFordAlgo<Integer, Integer>(),filePath);
 		DijService = new ShortestPathService(new DijkstraAlgo<Integer, Integer>(),filePath);
+		idao = new IDaoController<IGraph<Integer,Integer>>(filePath);
+		idao.setUp();
 	}
 	
 	@BeforeEach
@@ -36,7 +42,7 @@ class ServiceTest {
 	
 	@AfterEach
 	void clearList() throws IOException {
-		BellmanService.getDao().clear();
+		idao.clear();
 	}
 	
 	@Test
@@ -71,16 +77,15 @@ class ServiceTest {
 		graph.addNode(2);
 		graph.addNode(3);
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
-		DataModel<IGraph<Integer,Integer>> input = new DataModel<IGraph<Integer,Integer>>(graph);
-		BellmanService.getDao().save(input);
-		int size = BellmanService.getDao().getListSize();
+		idao.save(graph);
+		int size = idao.getListSize();
 		assertEquals(1, size);
 	}
 	
 	@Test
 	void saveToFileNullTest() {
-		BellmanService.getDao().save(null);
-		int size = BellmanService.getDao().getListSize();
+		idao.save(new IntegerWeightedGraph());
+		int size = idao.getListSize();
 		assertEquals(1, size);
 	}
 	
@@ -91,21 +96,20 @@ class ServiceTest {
 		graph.addNode(3);
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
 		DataModel<IGraph<Integer,Integer>> input = new DataModel<IGraph<Integer,Integer>>(graph);
-		BellmanService.getDao().save(input);
-		DataModel<IGraph<Integer,Integer>> findResult = BellmanService.getDao().find(input.id);
+		idao.save(input);
+		DataModel<IGraph<Integer,Integer>> findResult = idao.findDataModel(input.id);
 		assertTrue(input.id.equals(findResult.id));
 	}
 	
 	@Test
 	void nullIDTest() {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> BellmanService.getDao().find(null));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> idao.find(null));
 	}
 	 
 	@Test
 	void itemNotFoundTest() {
-		DataModel<IGraph<Integer,Integer>> input = new DataModel<IGraph<Integer,Integer>>(graph);
-		BellmanService.getDao().save(input);
-		Assertions.assertThrows(IOException.class, () -> BellmanService.getDao().find(2424));
+		idao.save(graph);
+		Assertions.assertThrows(IOException.class, () ->idao.find(UUID.randomUUID()));
 	}
 	
 	@Test
@@ -116,23 +120,22 @@ class ServiceTest {
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
 		DataModel<IGraph<Integer,Integer>> input1 = new DataModel<IGraph<Integer,Integer>>(graph);
 		DataModel<IGraph<Integer,Integer>> input2 = new DataModel<IGraph<Integer,Integer>>(graph);
-		BellmanService.getDao().save(input1);
-		BellmanService.getDao().save(input2);
-		BellmanService.getDao().delete(input1.id);
-		int size = BellmanService.getDao().getListSize();
+		idao.save(input1);
+		idao.save(input2);
+		idao.delete(input1.id);
+		int size = idao.getListSize();
 		assertEquals(1, size);
 	}
 	
 	@Test
 	void deleteNullTest() {
-		Assertions.assertThrows(IllegalArgumentException.class, () -> BellmanService.getDao().delete(null));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> idao.delete(null));
 	}
 	
 	@Test
 	void deleteNotFoundTest() {
-		DataModel<IGraph<Integer,Integer>> input = new DataModel<IGraph<Integer,Integer>>(graph);
-		BellmanService.getDao().save(input);
-		Assertions.assertThrows(IOException.class, () -> BellmanService.getDao().delete(215125));
+		idao.save(graph);
+		Assertions.assertThrows(IOException.class, () -> idao.delete(UUID.randomUUID()));
 	}
 
 }

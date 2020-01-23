@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hit.dm.DataModel;
 
 public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
-
+	
 	Gson gson = new Gson();
 	String filepath;
 	Writer writer;
@@ -62,7 +62,6 @@ public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 	@Override
 	public synchronized DataModel<T> find(Serializable id) throws IllegalArgumentException, IOException {
 		Serializable listid = null;
-		
 		if (id == null) {
 			throw new IllegalArgumentException();
 		}
@@ -100,5 +99,4 @@ public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 			writer.close(); 
 	}
 
-	
 }

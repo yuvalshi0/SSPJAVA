@@ -1,1 +1,1 @@
-[]
+[{"id":"c4720571-4b28-490e-87bd-2238faf1971a","body":{"edges":[{"source":1.0,"destination":2.0,"weight":1.0},{"source":1.0,"destination":3.0,"weight":-7.0},{"source":2.0,"destination":3.0,"weight":-1.0}],"vertices":[1.0,2.0,3.0]}},{"id":"11c99e51-72a5-444e-b4ce-fe76ddf2f205","body":{"edges":[{"source":1,"destination":2,"weight":1},{"source":1,"destination":3,"weight":2},{"source":2,"destination":3,"weight":-1}],"vertices":[1,2,3]}}]
