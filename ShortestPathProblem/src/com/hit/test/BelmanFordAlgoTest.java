@@ -32,7 +32,7 @@ class BelmanFordAlgoTest {
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
 		graph.addEdge(new IntegerWeightedEdge(1, 3, 2));
 		
-		int shortestPath = algo.compute(graph,1,2);
+		int shortestPath = algo.compute(graph,1,2).asValue();
 		assertEquals(1, shortestPath);
 		
 	}
@@ -46,7 +46,7 @@ class BelmanFordAlgoTest {
 		graph.addEdge(new IntegerWeightedEdge(1, 3, 2));
 		graph.addEdge(new IntegerWeightedEdge(2, 3, -1));
 
-		int shortestPath = algo.compute(graph,1,3);
+		int shortestPath = algo.compute(graph,1,3).asValue();
 		assertEquals(0, shortestPath);
 		
 	}
@@ -65,14 +65,31 @@ class BelmanFordAlgoTest {
 	}
 	
 	@Test
-	void simpleSolutionTestWithMinus2() throws IOException {
+	void simpleSolutionTest2() throws IOException {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
 		
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 15));
 		graph.addEdge(new IntegerWeightedEdge(2, 1, 17));
-		assertEquals(15,algo.compute(graph,1,2));
+		assertEquals(15,algo.compute(graph,1,2).asValue());
+		
+	}
+	
+	@Test
+	void complexGraph() throws IOException {
+		for(int i = 1; i < 6; i++) graph.addNode(i);
+		
+		graph.addEdge(new IntegerWeightedEdge(1, 2, -1));
+		graph.addEdge(new IntegerWeightedEdge(2, 3, 2));
+		graph.addEdge(new IntegerWeightedEdge(3, 4, -3));
+		graph.addEdge(new IntegerWeightedEdge(2, 4, 2));
+		graph.addEdge(new IntegerWeightedEdge(4, 2, 1));
+		graph.addEdge(new IntegerWeightedEdge(4, 5, 5));
+		graph.addEdge(new IntegerWeightedEdge(2, 5, 3));
+		graph.addEdge(new IntegerWeightedEdge(1, 5, 4));
+		
+		assertEquals(-2,algo.compute(graph,1,4).asValue());
 		
 	}
 

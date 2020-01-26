@@ -31,7 +31,7 @@ class DijkstraAlgoTest {
 		graph.addEdge(new IntegerWeightedEdge(1, 2, 1));
 		graph.addEdge(new IntegerWeightedEdge(1, 3, 2));
 		
-		int shortestPath = algo.compute(graph,1,2);
+		int shortestPath = algo.compute(graph,1,2).asValue();
 		assertEquals(1, shortestPath);
 		
 	}
@@ -46,7 +46,7 @@ class DijkstraAlgoTest {
 		graph.addEdge(new IntegerWeightedEdge(1, 3, 4));
 		graph.addEdge(new IntegerWeightedEdge(2, 3, 1));
 		
-		int shortestPath = algo.compute(graph,1,3);
+		int shortestPath = algo.compute(graph,1,3).asValue();
 		assertEquals(2, shortestPath);
 		
 	}
@@ -60,7 +60,7 @@ class DijkstraAlgoTest {
 		graph.addEdge(new IntegerWeightedEdge(1, 2, -1));
 		graph.addEdge(new IntegerWeightedEdge(1, 3, 2));
 		graph.addEdge(new IntegerWeightedEdge(2, 3, 2));
-		Assertions.assertThrows(IOException.class, () -> algo.compute(graph,1,2));
+		Assertions.assertThrows(IOException.class, () -> algo.compute(graph,1,2).asValue());
 		
 	}
 	
@@ -71,8 +71,26 @@ class DijkstraAlgoTest {
 		graph.addNode(3);
 		
 		graph.addEdge(new IntegerWeightedEdge(2, 3, 1));
-		int shortestPath= algo.compute(graph,1,2);
+		int shortestPath= algo.compute(graph,1,2).asValue();
 		assertEquals(graph.getMaxToken(), shortestPath);
+		
+	}
+	
+	@Test
+	void complexGraph() throws IOException {
+		for(int i = 1; i < 6; i++) graph.addNode(i);
+		
+		graph.addEdge(new IntegerWeightedEdge(1, 2, 10));
+		graph.addEdge(new IntegerWeightedEdge(1, 5, 3));
+		graph.addEdge(new IntegerWeightedEdge(2, 5, 4));
+		graph.addEdge(new IntegerWeightedEdge(2, 3, 2));
+		graph.addEdge(new IntegerWeightedEdge(3, 4, 9));
+		graph.addEdge(new IntegerWeightedEdge(4, 3, 7));
+		graph.addEdge(new IntegerWeightedEdge(5, 2, 1));
+		graph.addEdge(new IntegerWeightedEdge(5, 4, 2));
+		graph.addEdge(new IntegerWeightedEdge(5, 3, 8));
+		assertEquals(6,algo.compute(graph,1,3).asValue());
+		
 		
 	}
 	

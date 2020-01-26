@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -74,6 +75,7 @@ public class HandleRequest implements Runnable {
 		 }
 	}
 
+	//TODO: make handle compute aciton return object maybe?
 	private void HandleAction() throws IllegalArgumentException, IOException, NullPointerException {
 		Request request = readRequestFromReader();
 		String action = request.getHeaders().get("action");
@@ -81,28 +83,16 @@ public class HandleRequest implements Runnable {
 		controller.setUp();
 		switch (action) {
 		case "COMPUTE":
-			HandleComputeRequest(request);
+			HandleComputeAction(controller,request.getContent());
 			break;
 		case "POST":
-			IntegerWeightedGraph graph = new IntegerWeightedGraph(request.getContent());
-			System.out.println("Posting");
-			controller.setUp();
-			controller.save(graph);
-			sendResponse(new Response.Build().Ok().create());
+			HandlePostAction(controller,request.getContent());
 			break;
 		case "GET":
-			  UUID id = gson.fromJson(request.getContent(), UUID.class); 
-			  System.out.println("Getting");
-			  controller.setUp(); 
-			  sendResponse(new Response.Build().Ok().setContent(controller.find(id)).create());
+			HandleGetAction(controller,request.getContent());
 			break;
 		case "DELETE":
-			
-			  UUID deleteId = gson.fromJson(request.getContent(), UUID.class);
-			  System.out.println("Deleting");
-			  controller.setUp();
-			  controller.delete(deleteId);
-			  sendResponse(new Response.Build().Ok().create());
+			HandleDeleteAction(controller,request.getContent());
 			break;
 		default:
 			sendResponse(
@@ -111,12 +101,33 @@ public class HandleRequest implements Runnable {
 	}
 }
 	
-	private void HandleComputeRequest(Request request) {
-		IDaoController<IntegerWeightedGraph> controller = new IDaoController<IntegerWeightedGraph>();
+	private void HandlePostAction(IDaoController<IntegerWeightedGraph> controller, String content) {
+		IntegerWeightedGraph graph = new IntegerWeightedGraph(content);
+		System.out.println("Posting");
 		controller.setUp();
+		controller.save(graph);
+		sendResponse(new Response.Build().Ok().create());
+	}
+	
+	private void HandleGetAction(IDaoController<IntegerWeightedGraph> controller, String content) throws IllegalArgumentException, IOException {
+		  UUID id = gson.fromJson(content, UUID.class); 
+		  System.out.println("Getting");
+		  controller.setUp(); 
+		  sendResponse(new Response.Build().Ok().setContent(controller.find(id)).create());
+	}
+	
+	private void HandleDeleteAction(IDaoController<IntegerWeightedGraph> controller, String content) throws IllegalArgumentException, IOException {
+		 	UUID deleteId = gson.fromJson(content, UUID.class);
+		  System.out.println("Deleting");
+		  controller.setUp();
+		  controller.delete(deleteId);
+		  sendResponse(new Response.Build().Ok().create());
+	}
+	
+	private void HandleComputeAction(IDaoController<IntegerWeightedGraph> controller, String content) {
 		ShortestPathController shortestPathController = null;
 		IntegerWeightedGraph computeGraph;
-		ComputeContent data = gson.fromJson(request.getContent(), ComputeContent.class);
+		ComputeContent data = gson.fromJson(content, ComputeContent.class);
 		
 		if(data.algorithm.equals("bellman-ford")) {
 			shortestPathController = new ShortestPathController(new BellmanFordAlgo<Integer,Integer>());
@@ -132,7 +143,7 @@ public class HandleRequest implements Runnable {
 		try {
 			temp = gson.toJson(controller.find(data.id));
 			computeGraph = new IntegerWeightedGraph(temp);
-			int shortestPath = shortestPathController.compute(computeGraph,data.source,data.destination);
+			LinkedList<Integer> shortestPath = shortestPathController.compute(computeGraph,data.source,data.destination);
 			sendResponse(new Response.Build().Ok().setContent(shortestPath).create());
 		} catch (IllegalArgumentException | IOException e) {
 			sendResponse(new Response.Build().Error().setContent(e).create());

@@ -3,11 +3,13 @@ package com.hit.algorithm;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 
+import com.hit.algorithm.AbstarctAlgoSPP.Result;
 import com.hit.graph.AbstarctWeightedGraph;
 import com.hit.graph.AbstractWeightedEdge;
 
@@ -15,15 +17,19 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
 
 	private Set<T> settled; 
 	private PriorityQueue<T> pq;
-	HashMap<T,S> distMap;
+	private HashMap<T,S> distMap;
+	private LinkedList<T> path;
 	private AbstarctWeightedGraph<T,S> graph;
 	
 	@Override
-	public S compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) throws IOException {
+	public Result<T,S> compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) throws IOException {
 		this.graph = graph;
-		pq = new PriorityQueue<T>(); 
+		
+		
 		distMap = new HashMap<>();
+		pathMap = new HashMap<>();;
 		settled = new HashSet<>();
+		pq = new PriorityQueue<>((node1, node2) -> distMap.get(node1).compareTo(distMap.get(node2)));
 		
 		if(graph.getNodes() == null) {
 			throw new IOException();
@@ -35,7 +41,7 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
 		distMap.put(source,graph.getZeroToken());
 		
 		if(graph.getEdges() == null) {
-			return distMap.get(destination);
+			return new Result<T,S>(computePath(destination), distMap.get(destination));
 		}
 		
 		pq.add(source);
@@ -49,8 +55,7 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
             settled.add(u); 
             relax(u); 
         } 
-		
-		return distMap.get(destination);
+		return new Result<T,S>(computePath(destination), distMap.get(destination));
 	}
 	
 	private T getNextKey() {
@@ -78,6 +83,7 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
              
                 if (isTheNewPathShorter < 0) { 
                 	distMap.put(v, currentPathPlusWeight); 
+                	pathMap.put(v, u);
             } 
                 pq.add(v); 
             } 

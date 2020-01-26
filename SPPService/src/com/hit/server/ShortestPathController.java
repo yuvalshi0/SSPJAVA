@@ -1,5 +1,7 @@
 package com.hit.server;
 
+import java.util.LinkedList;
+
 import com.hit.algorithm.BellmanFordAlgo;
 import com.hit.algorithm.IAlgoSPP;
 import com.hit.algorithm.IntegerWeightedGraph;
@@ -24,7 +26,7 @@ public class ShortestPathController extends AbstractController<Integer> {
 		
 	}
 	
-	public int compute(IntegerWeightedGraph graph, Integer source, Integer dest) {
+	public LinkedList<Integer> compute(IntegerWeightedGraph graph, Integer source, Integer dest) {
 		return service.compute(graph, source, dest);
 	}
 
