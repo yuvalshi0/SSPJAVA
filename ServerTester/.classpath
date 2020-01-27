@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="gson-2.8.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Yuval Shimon/eclipse-workspace/SPPJava/ServerTester/AlgorithmModule.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
