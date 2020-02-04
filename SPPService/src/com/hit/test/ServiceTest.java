@@ -46,7 +46,7 @@ class ServiceTest {
 	}
 	
 	@Test
-	void basicPathBellmanTest() {
+	void basicPathBellmanTest() throws IOException {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
@@ -59,7 +59,7 @@ class ServiceTest {
 	}
 	
 	@Test
-	void basicPathDijTest() {
+	void basicPathDijTest() throws IOException {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
@@ -72,7 +72,7 @@ class ServiceTest {
 	}
 	
 	@Test
-	void saveToFileTest() {
+	void saveToFileTest() throws IOException {
 		graph.addNode(1);
 		graph.addNode(2);
 		graph.addNode(3);
@@ -83,7 +83,7 @@ class ServiceTest {
 	}
 	
 	@Test
-	void saveToFileNullTest() {
+	void saveToFileNullTest() throws IOException {
 		idao.save(new IntegerWeightedGraph());
 		int size = idao.getListSize();
 		assertEquals(1, size);

@@ -3,6 +3,8 @@ package com.hit.service;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.imageio.IIOException;
+
 import com.hit.algorithm.IAlgoSPP;
 import com.hit.graph.AbstarctWeightedGraph;
 
@@ -21,22 +23,14 @@ public class ShortestPathService {
 	}
 	
 	
-	public LinkedList<Integer> compute(AbstarctWeightedGraph<Integer,Integer> graph, Integer source, Integer dest) {
-		try {	
+	public LinkedList<Integer> compute(AbstarctWeightedGraph<Integer,Integer> graph, Integer source, Integer dest) throws IOException {
 			return algo.compute(graph, source, dest).asPath();	
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+		
 	}
 	
-	public Integer computeAsSize(AbstarctWeightedGraph<Integer,Integer> graph, Integer source, Integer dest) {
-		try {	
+	public Integer computeAsSize(AbstarctWeightedGraph<Integer,Integer> graph, Integer source, Integer dest) throws IOException{
 			return algo.compute(graph, source, dest).asValue();	
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+	
 	}
 	
 }

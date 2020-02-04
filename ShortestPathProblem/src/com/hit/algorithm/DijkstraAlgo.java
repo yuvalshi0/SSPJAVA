@@ -24,15 +24,17 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
 	@Override
 	public Result<T,S> compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) throws IOException {
 		this.graph = graph;
-		
-		
 		distMap = new HashMap<>();
 		pathMap = new HashMap<>();;
 		settled = new HashSet<>();
 		pq = new PriorityQueue<>((node1, node2) -> distMap.get(node1).compareTo(distMap.get(node2)));
 		
 		if(graph.getNodes() == null) {
-			throw new IOException();
+			throw new IllegalArgumentException("No nodes were in the graph");
+		}
+		
+		if(!graph.getNodes().contains(source) || !graph.getNodes().contains(destination)) {
+			throw new IllegalArgumentException("Source or destination node were not found in the graph" );
 		}
 		
 		for(T node : graph.getNodes()) {
@@ -55,6 +57,11 @@ public class DijkstraAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<T,S
             settled.add(u); 
             relax(u); 
         } 
+		
+		if(distMap.get(destination).equals(graph.getMaxToken())) {
+			throw new IllegalArgumentException("No path was found");
+		}
+		
 		return new Result<T,S>(computePath(destination), distMap.get(destination));
 	}
 	

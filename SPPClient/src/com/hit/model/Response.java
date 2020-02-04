@@ -1,15 +1,12 @@
-
+package com.hit.model;
 import java.util.Map;
 
-import com.google.gson.JsonObject;
-
-public class Request {
+public class Response {
 	private Map<String, String> headers;
 	private String content;
 	
 	
-	public Request(Map<String, String> headers, String content) {
-		super();
+	public Response(Map<String, String> headers, String content) {
 		this.headers = headers;
 		this.content = content;
 	}

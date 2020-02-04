@@ -11,14 +11,19 @@ public class BellmanFordAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<
 	
 	private HashMap<T,S> distMap;
 	@Override
-	public Result<T,S> compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) throws IOException {
-		int vertexSize = graph.getNodes().size();
+	public Result<T,S> compute(AbstarctWeightedGraph<T,S> graph, T source, T destination) throws IllegalArgumentException, IOException {
+		
 		distMap = new HashMap<>();
 		pathMap = new HashMap<>();
 		
 		if(graph.getNodes() == null) {
-			throw new IOException();
+			throw new IllegalArgumentException("No nodes were in the graph");
 		}
+		
+		if(!graph.getNodes().contains(source) || !graph.getNodes().contains(destination)) {
+			throw new IllegalArgumentException("Source or destination node were not found in the graph" );
+		}
+		int vertexSize = graph.getNodes().size();
 		for(T node : graph.getNodes()) {
 			distMap.put(node, graph.getMaxToken());
 		}
@@ -29,7 +34,11 @@ public class BellmanFordAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<
 		for (int i = 1; i < vertexSize; i++) { 		
             	relax(graph);	
 		}
+		
 		verfiyNoMinusCycle(graph);
+		if(distMap.get(destination).equals(graph.getMaxToken())) {
+			throw new IllegalArgumentException("No path was found");
+		}
 		return new Result<T,S>(computePath(destination), distMap.get(destination));
 	}
 	
@@ -60,7 +69,7 @@ public class BellmanFordAlgo<T,S extends Comparable<S>> extends AbstarctAlgoSPP<
 		             int isTheNewPathShorter = currentPathPlusWeight.compareTo(currentPathWeight);
 		             
 		             if (distMap.get(u) != graph.getMaxToken() && isTheNewPathShorter < 0) { 
-		             	throw new IOException();
+		             	throw new IOException("Minus cycle detected in the graph");
 		         } 
              }
      }

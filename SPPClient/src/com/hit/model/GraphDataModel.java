@@ -1,5 +1,4 @@
-package com.hit.dm;
-
+package com.hit.model;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,8 +11,8 @@ import com.google.gson.reflect.TypeToken;
 import com.hit.algorithm.IntegerWeightedEdge;
 import com.hit.graph.AbstractWeightedEdge;
 
-public class IntegerWeightedGraph extends com.hit.algorithm.IntegerWeightedGraph{
-	public IntegerWeightedGraph(String json) {
+public class GraphDataModel extends com.hit.algorithm.IntegerWeightedGraph{
+	public GraphDataModel(String json) {
 		super();
 		deserialize(json);
 	}
@@ -33,10 +32,10 @@ public class IntegerWeightedGraph extends com.hit.algorithm.IntegerWeightedGraph
  			this.addNodes(nodes);
  		}
  		
+ 		
  		if(hashGraph.get("edges") != null) {		
  			List<AbstractWeightedEdge<Integer,Integer>> edges = gson.fromJson(hashGraph.get("edges").toString(), listType2);
 			this.addEdges(edges);
  		}
 	}
-	
 }

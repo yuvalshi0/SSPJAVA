@@ -32,7 +32,7 @@ public class HandleRequest implements Runnable {
 			HandleAction();
 		} catch (IllegalArgumentException | IOException e) {
 			sendResponse(
-					new Response.Build().Error().setContent(e).create()
+					new Response.Build().Error().setContent(e.getMessage()).create()
 				);
 		}
 	}
@@ -43,7 +43,7 @@ public class HandleRequest implements Runnable {
 			return request;
 		} catch(JsonParseException e) {
 			sendResponse(
-				new Response.Build().Error().setContent(e).create()
+				new Response.Build().Error().setContent(e.getMessage()).create()
 			);
 			return null;
 		}
@@ -57,7 +57,7 @@ public class HandleRequest implements Runnable {
 			input = reader.readLine();
 		} catch (IOException e) {
 			sendResponse(
-					new Response.Build().Error().setContent(e).create()
+					new Response.Build().Error().setContent(e.getMessage()).create()
 				);
 		}
 		return input;
@@ -72,7 +72,13 @@ public class HandleRequest implements Runnable {
 		 output.println(responceJson);
 		} catch(IOException e) {
 			e.printStackTrace(); 
-		 }
+		 } finally {
+			try {
+				this.socket.close();
+			} catch (IOException e) {		
+				e.printStackTrace();
+			}
+		}
 	}
 
 	//TODO: make handle compute aciton return object maybe?
@@ -91,6 +97,9 @@ public class HandleRequest implements Runnable {
 		case "GET":
 			HandleGetAction(controller,request.getContent());
 			break;
+		case "GETALL":
+			HandleGetAllAction(controller,request.getContent());
+			break;
 		case "DELETE":
 			HandleDeleteAction(controller,request.getContent());
 			break;
@@ -101,24 +110,26 @@ public class HandleRequest implements Runnable {
 	}
 }
 	
-	private void HandlePostAction(IDaoController<IntegerWeightedGraph> controller, String content) {
+	private void HandleGetAllAction(IDaoController<IntegerWeightedGraph> controller, String content) throws IOException {
+		Response response = new Response.Build().Ok().setContent(controller.getAll()).create();
+		sendResponse(response);
+	}
+
+	private void HandlePostAction(IDaoController<IntegerWeightedGraph> controller, String content) throws IOException {
 		IntegerWeightedGraph graph = new IntegerWeightedGraph(content);
-		System.out.println("Posting");
 		controller.setUp();
 		controller.save(graph);
-		sendResponse(new Response.Build().Ok().create());
+		sendResponse(new Response.Build().Ok().setContent(controller.getAll()).create());
 	}
 	
 	private void HandleGetAction(IDaoController<IntegerWeightedGraph> controller, String content) throws IllegalArgumentException, IOException {
 		  UUID id = gson.fromJson(content, UUID.class); 
-		  System.out.println("Getting");
 		  controller.setUp(); 
 		  sendResponse(new Response.Build().Ok().setContent(controller.find(id)).create());
 	}
 	
 	private void HandleDeleteAction(IDaoController<IntegerWeightedGraph> controller, String content) throws IllegalArgumentException, IOException {
 		 	UUID deleteId = gson.fromJson(content, UUID.class);
-		  System.out.println("Deleting");
 		  controller.setUp();
 		  controller.delete(deleteId);
 		  sendResponse(new Response.Build().Ok().create());
@@ -146,7 +157,7 @@ public class HandleRequest implements Runnable {
 			LinkedList<Integer> shortestPath = shortestPathController.compute(computeGraph,data.source,data.destination);
 			sendResponse(new Response.Build().Ok().setContent(shortestPath).create());
 		} catch (IllegalArgumentException | IOException e) {
-			sendResponse(new Response.Build().Error().setContent(e).create());
+			sendResponse(new Response.Build().Error().setContent(e.getMessage()).create());
 		}
 		
 	}

@@ -1,6 +1,4 @@
 package com.hit.idao;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
@@ -12,6 +10,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hit.dm.DataModel;
+import com.hit.service.IOService;
 
 public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 	
@@ -20,7 +19,7 @@ public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 	Writer writer;
 	Reader reader;
 	
-	public int getListSize() {
+	public int getListSize() throws IOException {
 		return readFileToList().size();
 	}
 	
@@ -33,7 +32,7 @@ public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 	}
 	
 	@Override
-	public synchronized void save(DataModel<T> entity) {	
+	public void save(DataModel<T> entity) {	
 		try {
 			List<DataModel<T>> list = readFileToList();
 			list.add(entity);
@@ -44,7 +43,7 @@ public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 	}
 
 	@Override
-	public synchronized void delete(Serializable id) throws IllegalArgumentException, IOException {
+	public void delete(Serializable id) throws IllegalArgumentException, IOException {
 		if (id == null) {
 			throw new IllegalArgumentException();
 		}
@@ -59,8 +58,12 @@ public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 		
 	}
 	
+	public List<DataModel<T>> getAll() throws IOException {
+		return readFileToList();
+	}
+	
 	@Override
-	public synchronized DataModel<T> find(Serializable id) throws IllegalArgumentException, IOException {
+	public DataModel<T> find(Serializable id) throws IllegalArgumentException, IOException {
 		Serializable listid = null;
 		if (id == null) {
 			throw new IllegalArgumentException();
@@ -76,27 +79,13 @@ public class DaoFileImpl<T> implements IDao<Serializable, DataModel<T>> {
 		throw new IOException();	
 		}
 	
-	private List<DataModel<T>> readFileToList()  {
+	private List<DataModel<T>> readFileToList() throws IOException  {
 		Type customType = new TypeToken<List<DataModel<T>>>(){}.getType();
-		List<DataModel<T>> list = null;
-		
-		try {
-			reader = new FileReader(filepath);
-			list = gson.fromJson(reader, customType);
-			reader.close(); 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if(list==null) {
-	        list = new ArrayList<>();
-	 }	 
-		return list;
+		return (List<DataModel<T>>) IOService.getInstance().readFileToList(customType);
 	}
 	
 	private void writeToFile(List<DataModel<T>> list) throws IOException {
-			writer  = new FileWriter(filepath);
-			gson.toJson(list, writer);
-			writer.close(); 
+				IOService.getInstance().writeToFile(list);
 	}
 
 }

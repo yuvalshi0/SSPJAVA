@@ -10,6 +10,7 @@ import com.hit.algorithm.IntegerWeightedEdge;
 import com.hit.algorithm.IntegerWeightedGraph;
 import com.hit.dm.DataModel;
 import com.hit.graph.IGraph;
+import com.hit.service.IOService;
 
 public class Server implements Runnable {
 
@@ -30,9 +31,10 @@ public class Server implements Runnable {
 	@Override
 	public void run() {
 		executor = Executors.newFixedThreadPool(poolSize);
-
+		
 		 System.out.println("Server is listening on port: " + serverSocket.getLocalPort());
 		 System.out.println("Pool Size: " + poolSize);
+		 executor.execute(IOService.getInstance());
          
 		 while (true) {
              Socket socket;

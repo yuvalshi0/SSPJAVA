@@ -7,7 +7,6 @@ public abstract class AbstarctAlgoSPP<T,S extends Comparable<S>> implements IAlg
 	HashMap<T,T> pathMap;
 	LinkedList<T> path;
 	int shortestPath;
-	
 	LinkedList<T> computePath(T destination) {
 		path = new LinkedList<>();
 		T current = destination;

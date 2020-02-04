@@ -1,6 +1,7 @@
 package com.hit.server;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
@@ -48,8 +49,12 @@ public class IDaoController<T> extends AbstractController<T>{
 		idao.clear();
 	}
 	
-	public int getListSize() {
+	public int getListSize() throws IOException {
 		return idao.getListSize();
+	}
+	
+	public List<DataModel<T>> getAll() throws IOException {
+		return idao.getAll();
 	}
 	
 }

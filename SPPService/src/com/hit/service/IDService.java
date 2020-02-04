@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class IDService {
 	private static IDService service;
+	private static int graphCount = 0;
 	
 	public static IDService getInstance() 
     { 
@@ -15,7 +16,12 @@ public class IDService {
 	
 	public UUID generateID() {
 		 UUID id = UUID.randomUUID();
+		 graphCount++;
 		 return id;
+	}
+	
+	public int getGraphCount() {
+		return graphCount;
 	}
 	
 }
