@@ -45,19 +45,19 @@ public class Server implements Runnable,PropertyChangeListener {
              Socket socket;
              executor.execute(IOService.getInstance());
              System.out.println("Server is listening on port: " + port);
-				System.out.println("Pool Size: " + poolSize + "\n");
+				System.out.println("Pool Size: " + poolSize);
              try {
 				serverSocket = new ServerSocket(port);
 				while (power) {
 					try {
 						socket = serverSocket.accept();
 						if(monitor) { 
-							System.out.println("New client connected\n");
+							System.out.println("New client connected");
 						}
 						
 						executor.execute(new HandleRequest(socket,monitor));
 						} catch (IOException e) {
-							System.out.println("Server is down\n");
+							System.out.println("Server is down");
 						} 
 					}
            } catch (IOException e) {	
@@ -82,11 +82,11 @@ public class Server implements Runnable,PropertyChangeListener {
 				break;
 			}
 			else 
-				System.out.println("Server is already ON\n");
+				System.out.println("Server is already ON");
 			break;
 		case "stop":
 			if(power == false) 
-				System.out.println("Server is already OFF\n");
+				System.out.println("Server is already OFF");
 			else {
 				try {
 					power=false;
@@ -97,14 +97,14 @@ public class Server implements Runnable,PropertyChangeListener {
 			}
 		case "startmonitor":
 			if(monitor == true) 
-				System.out.println("Monitor already ON\n");
+				System.out.println("Monitor already ON");
 			else {
 				monitor = true;
 			}
 			break;
 		case "stopmonitor":
 			if(monitor == false) 
-				System.out.println("Monitor already OFF\n");
+				System.out.println("Monitor already OFF");
 			else {
 				monitor = false;
 			}
@@ -117,7 +117,7 @@ public class Server implements Runnable,PropertyChangeListener {
 			}
 			break;
 			default:
-				System.out.println("Not a valid command\n");
+				System.out.println("Not a valid command");
 				break;
 		}
 	}

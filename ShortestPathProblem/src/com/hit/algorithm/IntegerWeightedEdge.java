@@ -6,7 +6,6 @@ public class IntegerWeightedEdge extends AbstractWeightedEdge<Integer, Integer> 
 
 	public IntegerWeightedEdge(Integer source, Integer destination, Integer weight) {
 		super(source, destination, weight);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

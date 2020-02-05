@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.SwingConstants;
 
 
 
@@ -95,11 +96,17 @@ public class SPPNewGraphView extends JFrame {
 		toComboBox.setBounds(216, 15, 108, 22);
 		weightField = new JSpinner();
 		weightField.setBounds(380, 15, 96, 22);
+		JLabel titleLabel = new JLabel("New Graph Wizard");
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		titleLabel.setBounds(8, 18, 554, 14);
+		
+				mainPanel.add(titleLabel);
 		saveButton = new JButton("Save");
-		saveButton.setBounds(490, 409, 89, 23);
+		saveButton.setBounds(488, 438, 89, 23);
 		mainPanel.add(saveButton);
 		graphPanel = new JGraphPanel(554,298);
-		graphPanel.setBounds(23, 11, 554,298);
+		graphPanel.setBounds(8, 43, 563,298);
 		mainPanel.add(graphPanel);
 		
 		JLabel lblTo = new JLabel("To");
@@ -108,6 +115,7 @@ public class SPPNewGraphView extends JFrame {
 		JPanel addVertexTab = new JPanel();
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		JLabel lblAddEdge = new JLabel("Add Edge:");
+		
 		mainPanel.add(tabbedPane);
 		noticeLabel = new JLabel("");
 		noticeLabel.setBounds(23, 418, 162, 14);
@@ -116,7 +124,7 @@ public class SPPNewGraphView extends JFrame {
 		mainPanel.add(noticeLabel);
 		tabbedPane.addTab("New Vertex", null, addVertexTab, null);
 		tabbedPane.addTab("New Edge", null, addEdgeTab, null);
-		tabbedPane.setBounds(10, 318, 567, 80);
+		tabbedPane.setBounds(8, 347, 567, 80);
 		
 		addVertexTab.setToolTipText("Add New Node");
 		addVertexTab.setLayout(null);
@@ -137,9 +145,9 @@ public class SPPNewGraphView extends JFrame {
 		lblTo.setBounds(191, 18, 78, 14);
 		lblCost.setBounds(342, 18, 78, 14);
 		lblAddEdge.setBounds(10, 18, 78, 14);
-
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 605, 482);
+		setBounds(100, 100, 596, 502);
 		setContentPane(mainPanel);
 		setTitle("New Graph Wizard");
 	}
