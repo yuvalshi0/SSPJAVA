@@ -1,8 +1,12 @@
 package com.hit.server;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -12,42 +16,110 @@ import com.hit.dm.DataModel;
 import com.hit.graph.IGraph;
 import com.hit.service.IOService;
 
-public class Server implements Runnable {
+public class Server implements Runnable,PropertyChangeListener {
 
 	private ServerSocket serverSocket;
 	private Executor executor;
 	private int poolSize;
+	private int port;
+	private boolean power;
+	private boolean monitor = false;
 	
 	public Server(int port, int poolSize) throws IOException {
-			this.serverSocket = new ServerSocket(port);
+			this.port = port;
 			this.poolSize = poolSize;
+			this.power = false;
 	}
 	
 	public Server(int port) throws IOException {
+		this.port = port;
 		this.serverSocket = new ServerSocket(port);
 		this.poolSize = 3;
+		this.power = false;
 	}
 	
 	@Override
 	public void run() {
 		executor = Executors.newFixedThreadPool(poolSize);
-		
-		 System.out.println("Server is listening on port: " + serverSocket.getLocalPort());
-		 System.out.println("Pool Size: " + poolSize);
-		 executor.execute(IOService.getInstance());
-         
-		 while (true) {
+
              Socket socket;
+             executor.execute(IOService.getInstance());
+             System.out.println("Server is listening on port: " + port);
+				System.out.println("Pool Size: " + poolSize + "\n");
+             try {
+				serverSocket = new ServerSocket(port);
+				while (power) {
+					try {
+						socket = serverSocket.accept();
+						if(monitor) { 
+							System.out.println("New client connected\n");
+						}
+						
+						executor.execute(new HandleRequest(socket,monitor));
+						} catch (IOException e) {
+							System.out.println("Server is down\n");
+						} 
+					}
+           } catch (IOException e) {	
+ 			} finally {
+				try {
+					if(serverSocket != null) serverSocket.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String action =(String) evt.getNewValue();
+		
+		switch(action) {
+		case "start":
+			if(power == false) {
+				power = true;
+				new Thread(this).start();
+				break;
+			}
+			else 
+				System.out.println("Server is already ON\n");
+			break;
+		case "stop":
+			if(power == false) 
+				System.out.println("Server is already OFF\n");
+			else {
+				try {
+					power=false;
+					serverSocket.close();
+				}catch(IOException e) {
+					e.printStackTrace();
+				}
+			}
+		case "startmonitor":
+			if(monitor == true) 
+				System.out.println("Monitor already ON\n");
+			else {
+				monitor = true;
+			}
+			break;
+		case "stopmonitor":
+			if(monitor == false) 
+				System.out.println("Monitor already OFF\n");
+			else {
+				monitor = false;
+			}
+			break;
+		case "deletedb":
 			try {
-				socket = serverSocket.accept();
-				System.out.println("New client connected");
-				executor.execute(
-						new HandleRequest(socket));
-	             
+				IOService.getInstance().writeToFile(new ArrayList<>());
 			} catch (IOException e) {
 				e.printStackTrace();
-			}    
-         }
+			}
+			break;
+			default:
+				System.out.println("Not a valid command\n");
+				break;
 		}
+	}
 	}
 

@@ -21,9 +21,11 @@ public class HandleRequest implements Runnable {
 	Gson gson = new Gson();
 	Gson prettyPrinter = new GsonBuilder().setPrettyPrinting().create();
 	private Socket socket;
+	private boolean monitor;
 	
-	public HandleRequest(Socket socket) {
+	public HandleRequest(Socket socket, boolean monitor) {
 		this.socket = socket;
+		this.monitor = monitor;
 	}
 
 	@Override
@@ -39,7 +41,12 @@ public class HandleRequest implements Runnable {
 
 	private Request readRequestFromReader() {
 		try {
-			Request request = gson.fromJson(readSocket(), Request.class);
+			String socketText = readSocket();
+			Request request = gson.fromJson(socketText, Request.class);
+			if(monitor) {
+				System.out.println("Client Request:");
+				System.out.println(prettyPrinter.toJson(request));
+			}
 			return request;
 		} catch(JsonParseException e) {
 			sendResponse(
@@ -67,8 +74,13 @@ public class HandleRequest implements Runnable {
 		try { 
 		PrintStream output = new PrintStream(socket.getOutputStream());
 		 String responceJson = gson.toJson(response);
-		 String x = prettyPrinter.toJson(response);
-		 System.out.println("Responded to the user:" + x);
+		
+		 if(monitor) {
+			 String text = prettyPrinter.toJson(response);
+			 System.out.println("Server Response:");
+			 System.out.println(text);
+				
+		 }
 		 output.println(responceJson);
 		} catch(IOException e) {
 			e.printStackTrace(); 
@@ -81,7 +93,6 @@ public class HandleRequest implements Runnable {
 		}
 	}
 
-	//TODO: make handle compute aciton return object maybe?
 	private void HandleAction() throws IllegalArgumentException, IOException, NullPointerException {
 		Request request = readRequestFromReader();
 		String action = request.getHeaders().get("action");

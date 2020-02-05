@@ -17,6 +17,11 @@ import javax.swing.event.SwingPropertyChangeSupport;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hit.algorithm.IntegerWeightedGraph;
+import com.hit.model.dm.ComputeContent;
+import com.hit.model.dm.DataModel;
+import com.hit.model.dm.GraphDataModel;
+import com.hit.model.dm.Request;
+import com.hit.model.dm.Response;
 
 public class SPPModel {
 	
